@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLIR Imaging - Interactive Learning Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <!-- Polyfill not needed - modern browsers support ES6+ natively -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <header>
+        <h1>🔥 Forward-Looking Infrared (FLIR) Imaging</h1>
+        <p>Interactive Educational Platform</p>
+    </header>
+
+    <nav id="mainNav">
+        <button class="nav-btn active" data-section="intro">Introduction</button>
+        <button class="nav-btn" data-section="theory">Theory</button>
+        <button class="nav-btn" data-section="hardware">Hardware 3D</button>
+        <button class="nav-btn" data-section="datasets">Datasets</button>
+        <button class="nav-btn" data-section="analysis">Analysis Tools</button>
+        <button class="nav-btn" data-section="simulation">Simulation</button>
+        <button class="nav-btn" data-section="steel-inspection">Steel Inspection</button>
+    </nav>
+
+    <main id="content">
+        <!-- Introduction Section -->
+        <section id="intro" class="content-section active">
+            <h2>What is Forward-Looking Infrared (FLIR) Imaging?</h2>
+            
+            <div class="prose-section">
+                <p><strong>Forward-Looking Infrared (FLIR) imaging</strong> is a sophisticated thermal imaging technology that enables the detection and visualization of infrared radiation emitted by objects, translating thermal energy into detailed images that reveal temperature distributions across a scene. Unlike conventional cameras that rely on reflected visible light, FLIR systems operate by detecting the infrared energy naturally emitted by all objects as a function of their temperature—a phenomenon described by <a href="https://en.wikipedia.org/wiki/Planck%27s_law" target="_blank" rel="noopener">Planck's law of blackbody radiation</a>. This fundamental capability allows FLIR technology to "see" in complete darkness, through smoke, fog, and other obscurants that would render conventional optical systems ineffective.</p>
+                
+                <p>The development of FLIR technology represents a pivotal advancement in infrared imaging. In 1956, <strong>Texas Instruments</strong> began pioneering research into infrared technology, culminating in the creation of the first forward-looking infrared camera in 1963, with commercial production commencing in 1966. This innovation marked a significant leap from earlier line-scanning systems to real-time thermal imaging without moving sensors. The term "forward-looking" distinguishes these systems from downward-looking infrared systems used in aerial reconnaissance, emphasizing their application in ground-based and vehicle-mounted scenarios where the field of view is directed ahead of the platform <a href="https://dsiac.dtic.mil/state-of-the-art-reports/the-history-of-forward-looking-infrared-flir/" target="_blank" rel="noopener">(DSIAC, 2019)</a>.</p>
+                
+                <p>Modern FLIR systems have evolved to become indispensable tools across diverse sectors. In <strong>military and defense</strong> operations, FLIR imaging proved its worth during Operation Desert Storm, where it enabled forces to detect and engage targets under low-visibility conditions, providing a decisive tactical advantage. The technology facilitates surveillance, target acquisition, and navigation in environments where conventional optics fail. In <strong>law enforcement</strong>, police departments deploy FLIR-equipped drones and handheld units to locate suspects, manage hostage situations, and conduct nighttime operations safely. A notable example occurred in 2021 when the Arlington Police Department in Texas successfully located a suspect hiding on a rooftop using FLIR-equipped drones <a href="https://7b.org/what-is-forward-looking-infrared-imaging/" target="_blank" rel="noopener">(7B, 2021)</a>.</p>
+                
+                <p><strong>Search and rescue</strong> missions benefit immensely from FLIR's ability to detect body heat signatures, enabling rescuers to locate individuals in dense forests, collapsed structures, or at sea—environments where visual search methods would be impractical or impossible. In <strong>industrial applications</strong>, FLIR cameras identify equipment malfunctions, electrical hotspots, and insulation deficiencies by detecting abnormal heat patterns, enabling proactive maintenance that prevents catastrophic failures. Environmental researchers use FLIR imaging to monitor wildlife populations non-intrusively, study nocturnal animal behavior, and assess habitat conditions <a href="https://iecinfrared.com/white-papers/flir/" target="_blank" rel="noopener">(IEC Infrared, 2023)</a>.</p>
+            </div>
+            
+            <div class="intro-grid">
+                <div class="intro-card">
+                    <h3>Infrared Spectrum Visualization</h3>
+                    <p>FLIR cameras detect electromagnetic radiation in the infrared spectrum, specifically wavelengths from approximately 0.7μm to 14μm. This range is subdivided into Near-Infrared (NIR), Mid-Wave Infrared (MWIR), and Long-Wave Infrared (LWIR) bands, each with distinct characteristics and applications.</p>
+                    <canvas id="spectrumChart"></canvas>
+                    <p class="caption">The electromagnetic spectrum showing visible light and infrared bands used in FLIR imaging</p>
+                </div>
+                <div class="intro-card">
+                    <h3>Key Atmospheric Windows</h3>
+                    <p>Earth's atmosphere is not uniformly transparent to infrared radiation. Two primary "atmospheric windows" exist where transmission is high:</p>
+                    <ul>
+                        <li><strong>MWIR (3-5μm):</strong> Mid-Wave Infrared band optimal for detecting hot objects (>100°C) with high contrast. Requires cooled detectors for maximum sensitivity.</li>
+                        <li><strong>LWIR (8-14μm):</strong> Long-Wave Infrared band ideal for ambient temperature objects (0-50°C). Can use uncooled microbolometer detectors, making systems more compact and cost-effective.</li>
+                    </ul>
+                    <p>These windows are crucial because atmospheric gases (particularly water vapor and CO₂) absorb infrared radiation at other wavelengths, significantly reducing detection range.</p>
+                </div>
+                <div class="intro-card">
+                    <h3>Real-World Applications</h3>
+                    <ul>
+                        <li><strong>Military & Defense:</strong> Target acquisition, surveillance, navigation in GPS-denied environments</li>
+                        <li><strong>Search & Rescue:</strong> Locating survivors in disaster zones, wilderness, or maritime environments</li>
+                        <li><strong>Law Enforcement:</strong> Suspect tracking, perimeter security, crime scene investigation</li>
+                        <li><strong>Industrial Inspection:</strong> Predictive maintenance, electrical systems monitoring, building thermography</li>
+                        <li><strong>Autonomous Vehicles:</strong> Pedestrian detection, obstacle avoidance in poor visibility</li>
+                        <li><strong>Environmental Science:</strong> Wildlife monitoring, volcanic activity, vegetation health assessment</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="advantages-section">
+                <h3>Key Advantages of FLIR Technology</h3>
+                <div class="advantages-grid">
+                    <div class="advantage-card">
+                        <h4>🌙 24/7 Operation</h4>
+                        <p>Operates in complete darkness without artificial illumination, as it detects emitted (not reflected) radiation.</p>
+                    </div>
+                    <div class="advantage-card">
+                        <h4>🌫️ Obscurant Penetration</h4>
+                        <p>Effective through smoke, fog, dust, and light foliage that would blind visible-light cameras.</p>
+                    </div>
+                    <div class="advantage-card">
+                        <h4>🎭 Camouflage Detection</h4>
+                        <p>Reveals objects hidden by visual camouflage if their thermal signature differs from surroundings.</p>
+                    </div>
+                    <div class="advantage-card">
+                        <h4>🔇 Passive Detection</h4>
+                        <p>Emits no energy, making it undetectable—critical for covert military and surveillance operations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Theory Section -->
+        <section id="theory" class="content-section">
+            <h2>Fundamental Theory of Thermal Imaging</h2>
+            
+            <div class="prose-section">
+                <p>The physics underlying FLIR imaging rests on several fundamental principles of electromagnetic radiation and thermodynamics. At the most basic level, all objects above absolute zero (0 Kelvin or -273.15°C) emit electromagnetic radiation across a spectrum of wavelengths. The intensity and spectral distribution of this thermal radiation depend critically on the object's temperature and its emissivity—a material property that quantifies how efficiently the object radiates energy compared to an ideal blackbody.</p>
+                
+                <p>The theoretical foundation for understanding this phenomenon was laid by Max Planck in 1900 and Ludwig Boltzmann's earlier work on thermodynamics. Together, these theories enable us to predict and measure the thermal radiation emitted by real-world objects, which forms the basis for all thermal imaging applications. Understanding these principles is essential for designing effective FLIR systems, interpreting thermal images correctly, and calculating critical performance parameters such as detection range and temperature measurement accuracy.</p>
+                
+                <p>Modern FLIR systems must also account for the atmospheric environment through which infrared radiation propagates. The Earth's atmosphere contains various gases—particularly water vapor, carbon dioxide, and ozone—that selectively absorb infrared radiation at specific wavelengths. This atmospheric attenuation fundamentally constrains system design and explains why FLIR cameras operate primarily in the 3-5μm (MWIR) and 8-14μm (LWIR) atmospheric windows <a href="https://www.spiedigitallibrary.org/ebooks/PM/The-Infrared-and-Electro-Optical-Systems-Handbook/16" target="_blank" rel="noopener">(SPIE, 1993)</a>.</p>
+            </div>
+            
+            <div class="theory-block">
+                <h3>1. Blackbody Radiation - Stefan-Boltzmann Law</h3>
+                <p>The total power radiated per unit area by a blackbody is proportional to the fourth power of temperature:</p>
+                <div class="formula">
+                    \[ M = \varepsilon \sigma T^4 \]
+                </div>
+                <p>where \(\sigma = 5.67 \times 10^{-8}\) W/(m²·K⁴) and \(\varepsilon\) is emissivity (0-1)</p>
+                
+                <div class="equation-explanation">
+                    <h4>Application to FLIR Imaging:</h4>
+                    <p><strong>What it computes:</strong> The Stefan-Boltzmann law calculates the <em>total radiant power</em> emitted by an object across all wavelengths. This determines how much infrared energy reaches the FLIR detector from a target at a given temperature.</p>
+                    
+                    <p><strong>Why it matters for FLIR:</strong> This equation explains why FLIR cameras can detect temperature differences. A human body at 310K radiates approximately 524 W/m², while the background at 290K radiates only 401 W/m²—creating a 123 W/m² difference that the camera detects. The fourth-power relationship means that <em>small temperature increases produce large increases in radiated power</em>, making warm objects highly visible against cooler backgrounds.</p>
+                    
+                    <p><strong>Parameter effects on imaging:</strong></p>
+                    <ul>
+                        <li><strong>Temperature (T):</strong> Doubling temperature increases radiated power by 16× (2⁴). Hotter objects appear dramatically brighter in thermal images.</li>
+                        <li><strong>Emissivity (ε):</strong> Low-emissivity materials (polished metals ε≈0.1) appear much cooler than their actual temperature, while high-emissivity materials (human skin ε≈0.98) radiate efficiently. This affects target contrast and detection.</li>
+                    </ul>
+                </div>
+                
+                <div class="interactive-calc">
+                    <h4>Interactive Calculator - Compare Objects</h4>
+                    <div class="comparison-calc">
+                        <div class="calc-column">
+                            <h5>Object 1 (Target)</h5>
+                            <label>Temperature (K): <input type="number" id="temp-input" value="310" min="200" max="500"></label>
+                            <label>Emissivity: <input type="number" id="emissivity-input" value="0.98" min="0" max="1" step="0.05"></label>
+                        </div>
+                        <div class="calc-column">
+                            <h5>Object 2 (Background)</h5>
+                            <label>Temperature (K): <input type="number" id="temp-input-2" value="290" min="200" max="500"></label>
+                            <label>Emissivity: <input type="number" id="emissivity-input-2" value="0.95" min="0" max="1" step="0.05"></label>
+                        </div>
+                    </div>
+                    <button onclick="calculateRadiance()">Calculate & Compare</button>
+                    <div id="radiance-result"></div>
+                </div>
+            </div>
+
+            <div class="theory-block">
+                <h3>2. Planck's Law - Spectral Radiance</h3>
+                <p>Describes the spectrum of electromagnetic radiation emitted by a blackbody at temperature T:</p>
+                <div class="formula">
+                    \[ L(\lambda, T) = \frac{2hc^2}{\lambda^5} \frac{1}{e^{\frac{hc}{\lambda k T}} - 1} \]
+                </div>
+                <p>where h = Planck constant (6.626×10⁻³⁴ J·s), c = speed of light (3×10⁸ m/s), k = Boltzmann constant (1.381×10⁻²³ J/K)</p>
+                
+                <div class="equation-explanation">
+                    <h4>Application to FLIR Imaging:</h4>
+                    <p><strong>What it computes:</strong> Planck's law determines the <em>spectral distribution</em> of thermal radiation—how much energy is emitted at each specific wavelength. This is critical for FLIR because it explains why we use specific wavelength bands (MWIR vs LWIR) for different applications.</p>
+                    
+                    <p><strong>Why it matters for FLIR:</strong> At room temperature (300K), peak emission occurs around 10μm (LWIR band), which is why uncooled LWIR cameras work well for ambient temperature detection. Hot objects (>400K) have peak emission shifting toward shorter wavelengths (MWIR band), explaining why cooled MWIR cameras are preferred for detecting hot engines or fires. The curve shape determines which wavelength band provides maximum signal.</p>
+                    
+                    <p><strong>Parameter effects on imaging:</strong></p>
+                    <ul>
+                        <li><strong>Temperature increase:</strong> Peak wavelength shifts shorter (Wien's displacement), total area under curve increases dramatically (Stefan-Boltzmann), and MWIR/LWIR band ratio changes—affecting optimal detector choice.</li>
+                        <li><strong>Wavelength selection:</strong> MWIR (3-5μm) captures more energy from hot sources, LWIR (8-14μm) is better for cool objects. Toggle curves below to see this effect.</li>
+                    </ul>
+                </div>
+                
+                <canvas id="planckChart" width="600" height="400"></canvas>
+                <div class="interactive-calc">
+                    <div class="planck-controls">
+                        <label>Object Temperature (K): <input type="range" id="planck-temp" min="250" max="450" value="300" oninput="updatePlanck()">
+                        <span id="planck-temp-val">300</span>K</label>
+                        
+                        <div class="toggle-group">
+                            <h5>Compare Multiple Temperatures:</h5>
+                            <label><input type="checkbox" id="show-human" checked onchange="updatePlanck()"> Human Body (310K)</label>
+                            <label><input type="checkbox" id="show-vehicle" checked onchange="updatePlanck()"> Vehicle Engine (350K)</label>
+                            <label><input type="checkbox" id="show-fire" onchange="updatePlanck()"> Fire (700K)</label>
+                        </div>
+                        
+                        <div class="toggle-group">
+                            <h5>Highlight Detector Bands:</h5>
+                            <label><input type="checkbox" id="highlight-mwir" checked onchange="updatePlanck()"> MWIR Window (3-5μm)</label>
+                            <label><input type="checkbox" id="highlight-lwir" checked onchange="updatePlanck()"> LWIR Window (8-14μm)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theory-block">
+                <h3>3. Atmospheric Transmission</h3>
+                <p>Infrared radiation is attenuated by the atmosphere following Beer-Lambert law:</p>
+                <div class="formula">
+                    \[ \tau(d) = e^{-\alpha d} \]
+                </div>
+                <p>where \(\alpha\) is the atmospheric attenuation coefficient (km⁻¹) and d is distance (km)</p>
+                
+                <div class="equation-explanation">
+                    <h4>Application to FLIR Imaging:</h4>
+                    <p><strong>What it computes:</strong> This equation calculates the <em>fraction of infrared energy that survives</em> passage through the atmosphere over distance d. If τ = 0.5, only 50% of the original signal reaches the detector.</p>
+                    
+                    <p><strong>Why it matters for FLIR:</strong> Atmospheric attenuation is the primary factor limiting detection range in most FLIR applications. Water vapor (H₂O) and carbon dioxide (CO₂) strongly absorb IR at most wavelengths, but the 3-5μm and 8-14μm "atmospheric windows" have much lower absorption (α ≈ 0.05-0.2 km⁻¹ vs α > 10 km⁻¹ elsewhere). This is why FLIR systems operate exclusively in these bands.</p>
+                    
+                    <p><strong>Parameter effects on imaging:</strong></p>
+                    <ul>
+                        <li><strong>Distance (d):</strong> Signal decreases exponentially with range. At α=0.1 km⁻¹, transmission drops to 37% at 10km, 13.5% at 20km. Doubling distance doesn't halve signal—it squares the attenuation effect.</li>
+                        <li><strong>Atmospheric conditions (α):</strong> Clear day (α≈0.05), light haze (α≈0.2), fog (α>2). Fog can reduce detection range by 10-100× compared to clear conditions. Toggle conditions below to see dramatic effects.</li>
+                        <li><strong>Wavelength:</strong> LWIR (8-14μm) penetrates fog better than MWIR (3-5μm), which is why maritime and low-visibility applications prefer LWIR systems.</li>
+                    </ul>
+                </div>
+                
+                <canvas id="atmosphereChart" width="600" height="400"></canvas>
+                <div class="interactive-calc">
+                    <div class="atmosphere-controls">
+                        <h5>Atmospheric Conditions:</h5>
+                        <label>Distance (km): <input type="range" id="atmos-distance" min="1" max="30" value="10" oninput="updateAtmosphere()">
+                        <span id="atmos-distance-val">10</span>km</label>
+                        
+                        <div class="toggle-group">
+                            <label><input type="radio" name="atmos-condition" value="0.05" checked onchange="updateAtmosphere()"> Clear Day (α=0.05 km⁻¹)</label>
+                            <label><input type="radio" name="atmos-condition" value="0.15" onchange="updateAtmosphere()"> Light Haze (α=0.15 km⁻¹)</label>
+                            <label><input type="radio" name="atmos-condition" value="0.5" onchange="updateAtmosphere()"> Moderate Fog (α=0.5 km⁻¹)</label>
+                            <label><input type="radio" name="atmos-condition" value="2.0" onchange="updateAtmosphere()"> Heavy Fog (α=2.0 km⁻¹)</label>
+                        </div>
+                        
+                        <div id="transmission-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theory-block">
+                <h3>4. Signal-to-Noise Ratio (SNR)</h3>
+                <div class="formula">
+                    \[ SNR = \frac{S}{\sqrt{S + N_d + N_r^2}} \]
+                </div>
+                <p>where S = signal (photoelectrons), N<sub>d</sub> = dark current noise, N<sub>r</sub> = read noise (electrons RMS)</p>
+                
+                <div class="equation-explanation">
+                    <h4>Application to FLIR Imaging:</h4>
+                    <p><strong>What it computes:</strong> SNR quantifies the <em>quality of the detected signal</em> relative to random noise fluctuations. Higher SNR means clearer images with better ability to distinguish targets from background. SNR is typically expressed in decibels: SNR<sub>dB</sub> = 20 log₁₀(SNR).</p>
+                    
+                    <p><strong>Why it matters for FLIR:</strong> SNR directly determines detection performance. For reliable target detection, SNR ≥ 5 is typically required (14 dB). SNR affects both <em>detection range</em> (how far you can see) and <em>temperature resolution</em> (smallest temperature difference measurable). The Noise Equivalent Temperature Difference (NETD) is inversely related to SNR—better SNR means lower NETD and finer thermal detail.</p>
+                    
+                    <p><strong>Parameter effects on imaging:</strong></p>
+                    <ul>
+                        <li><strong>Signal (S):</strong> Proportional to target-background temperature difference and integration time. Longer integration (slower frame rate) increases signal and improves SNR but reduces temporal resolution—trade-off between image quality and video smoothness.</li>
+                        <li><strong>Dark Current (N<sub>d</sub>):</strong> Thermal noise from detector. Cooling the detector (77K for InSb) reduces N<sub>d</sub> by 100-1000×, dramatically improving SNR. This is why cooled detectors achieve NETD < 20mK vs 50-100mK for uncooled microbolometers.</li>
+                        <li><strong>Read Noise (N<sub>r</sub>):</strong> Electronics noise, typically 50-200 electrons. Better electronics reduce N<sub>r</sub>, improving low-signal performance (important for long-range or low-contrast scenarios).</li>
+                    </ul>
+                </div>
+                
+                <div class="interactive-calc">
+                    <h4>Interactive SNR Calculator</h4>
+                    <label>Signal (photoelectrons): <input type="number" id="signal-input" value="10000" min="100" max="100000" step="100"></label>
+                    <label>Dark Current Noise: <input type="number" id="dark-noise-input" value="500" min="0" max="5000" step="50"></label>
+                    <label>Read Noise (e⁻ RMS): <input type="number" id="read-noise-input" value="100" min="10" max="500" step="10"></label>
+                    <button onclick="calculateSNR()">Calculate SNR</button>
+                    <div id="snr-result"></div>
+                    
+                    <div class="toggle-group" style="margin-top: 1rem;">
+                        <h5>Detector Comparison:</h5>
+                        <button onclick="setDetectorType('uncooled')" class="comparison-btn">Uncooled Microbolometer</button>
+                        <button onclick="setDetectorType('cooled-insb')" class="comparison-btn">Cooled InSb (77K)</button>
+                        <button onclick="setDetectorType('cooled-mct')" class="comparison-btn">Cooled HgCdTe (80K)</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theory-block">
+                <h3>5. Johnson Criteria for Detection</h3>
+                <p>The Johnson Criteria, developed by John Johnson at the U.S. Army Night Vision Laboratory in the 1950s, provide empirical guidelines for predicting human observer performance in identifying targets through imaging systems. These criteria specify the minimum number of resolvable line pairs (cycles) across the critical dimension of a target required for different levels of recognition <a href="https://en.wikipedia.org/wiki/Johnson%27s_criteria" target="_blank" rel="noopener">(Johnson, 1958)</a>.</p>
+                <table class="johnson-table">
+                    <tr><th>Task</th><th>Line Pairs Required</th><th>Description</th></tr>
+                    <tr><td>Detection</td><td>2</td><td>Observer can distinguish an object from background</td></tr>
+                    <tr><td>Orientation</td><td>4</td><td>Observer can determine object's orientation</td></tr>
+                    <tr><td>Recognition</td><td>8</td><td>Observer can classify object type (vehicle, person, etc.)</td></tr>
+                    <tr><td>Identification</td><td>12</td><td>Observer can identify specific object characteristics</td></tr>
+                </table>
+                <p>These criteria remain fundamental to FLIR system design and performance prediction, particularly for calculating maximum detection ranges for targets of known size. Modern interpretations account for factors such as contrast, noise, and frame rate, leading to probabilistic detection models.</p>
+            </div>
+            
+            <div class="references-section">
+                <h3>📚 References and Further Reading</h3>
+                <ol>
+                    <li>
+                        Defense Systems Information Analysis Center (DSIAC). (2019). <em>The History of Forward-Looking Infrared (FLIR)</em>. 
+                        <a href="https://dsiac.dtic.mil/state-of-the-art-reports/the-history-of-forward-looking-infrared-flir/" target="_blank" rel="noopener">https://dsiac.dtic.mil/state-of-the-art-reports/the-history-of-forward-looking-infrared-flir/</a>
+                    </li>
+                    <li>
+                        IEC Infrared Systems. (2023). <em>FLIR Technology White Paper</em>. 
+                        <a href="https://iecinfrared.com/white-papers/flir/" target="_blank" rel="noopener">https://iecinfrared.com/white-papers/flir/</a>
+                    </li>
+                    <li>
+                        Vollmer, M., & Möllmann, K.-P. (2017). <em>Infrared Thermal Imaging: Fundamentals, Research and Applications</em> (2nd ed.). Wiley-VCH.
+                    </li>
+                    <li>
+                        Holst, G. C. (2008). <em>Electro-Optical Imaging System Performance</em> (5th ed.). JCD Publishing & SPIE Press.
+                    </li>
+                    <li>
+                        SPIE. (1993). <em>The Infrared and Electro-Optical Systems Handbook</em>. Environmental Research Institute of Michigan & SPIE Press.
+                        <a href="https://www.spiedigitallibrary.org/ebooks/PM/The-Infrared-and-Electro-Optical-Systems-Handbook/16" target="_blank" rel="noopener">SPIE Digital Library</a>
+                    </li>
+                    <li>
+                        Johnson, J. (1958). "Analysis of Image Forming Systems." <em>Proceedings of the Image Intensifier Symposium</em>, U.S. Army Engineer Research and Development Laboratory.
+                    </li>
+                    <li>
+                        Lloyd, J. M. (1975). <em>Thermal Imaging Systems</em>. Plenum Press.
+                    </li>
+                    <li>
+                        Rogalski, A. (2012). "History of infrared detectors." <em>Opto-Electronics Review</em>, 20(3), 279-308. 
+                        <a href="https://doi.org/10.2478/s11772-012-0037-7" target="_blank" rel="noopener">https://doi.org/10.2478/s11772-012-0037-7</a>
+                    </li>
+                    <li>
+                        7B Organization. (2021). <em>What is Forward-Looking Infrared Imaging?</em> 
+                        <a href="https://7b.org/what-is-forward-looking-infrared-imaging/" target="_blank" rel="noopener">https://7b.org/what-is-forward-looking-infrared-imaging/</a>
+                    </li>
+                    <li>
+                        National Institute of Standards and Technology (NIST). <em>Planck's Law and Blackbody Radiation</em>. 
+                        <a href="https://physics.nist.gov/cgi-bin/cuu/Value?h" target="_blank" rel="noopener">NIST Physical Constants Database</a>
+                    </li>
+                </ol>
+                
+                <p style="margin-top: 2rem; font-style: italic; color: #aaa;">
+                    <strong>Note:</strong> This educational platform is designed for teaching purposes. All physics principles, formulas, and detector specifications presented are based on established scientific literature and industry standards. Synthetic datasets generated by this platform simulate realistic thermal scenes but should not be used as substitutes for actual FLIR system calibration or operational data.
+                </p>
+            </div>
+        </section>
+
+        <!-- Hardware 3D Section -->
+        <section id="hardware" class="content-section">
+            <h2>FLIR Camera Hardware (3D Interactive)</h2>
+            <div class="hardware-container">
+                <div id="three-container"></div>
+                <div class="controls-panel">
+                    <h3>View Controls</h3>
+                    <div id="component-info">
+                        <button id="explode-btn" onclick="toggleExplodedView()" class="explode-btn">Exploded View</button>
+                        <button onclick="resetCamera()">Reset View</button>
+                    </div>
+                    
+                    <h3>Component Visibility</h3>
+                    <div class="component-toggles">
+                        <label><input type="checkbox" id="toggle-lens" checked onchange="toggleComponent('lens')"> Optics System</label>
+                        <label><input type="checkbox" id="toggle-detector" checked onchange="toggleComponent('detector')"> Detector Array</label>
+                        <label><input type="checkbox" id="toggle-cooling" checked onchange="toggleComponent('cooling')"> Cooling System</label>
+                        <label><input type="checkbox" id="toggle-housing" checked onchange="toggleComponent('housing')"> Housing</label>
+                        <label><input type="checkbox" id="toggle-board" checked onchange="toggleComponent('board')"> Electronics</label>
+                    </div>
+                    
+                    <h3>Component Information</h3>
+                    <div class="focus-buttons">
+                        <button onclick="focusComponent('lens')">Focus: Optics</button>
+                        <button onclick="focusComponent('detector')">Focus: Detector</button>
+                        <button onclick="focusComponent('cooling')">Focus: Cooling</button>
+                        <button onclick="focusComponent('housing')">Focus: Housing</button>
+                    </div>
+                    
+                    <div id="component-details">
+                        <h4>Interactive 3D Model</h4>
+                        <p><strong>Click and drag</strong> to rotate</p>
+                        <p><strong>Scroll</strong> to zoom</p>
+                        <p><strong>Toggle exploded view</strong> to see assembly</p>
+                    </div>
+                </div>
+            </div>
+            <div class="hardware-specs">
+                <h3>Common Components & Materials</h3>
+                <div class="specs-grid">
+                    <div class="spec-card">
+                        <h4>Lens Materials</h4>
+                        <ul>
+                            <li><strong>Germanium (Ge):</strong> High refractive index, 3-5μm & 8-14μm</li>
+                            <li><strong>Zinc Selenide (ZnSe):</strong> Broader spectrum, 0.6-20μm</li>
+                            <li><strong>Silicon (Si):</strong> 1-7μm range</li>
+                        </ul>
+                    </div>
+                    <div class="spec-card">
+                        <h4>Detector Types</h4>
+                        <ul>
+                            <li><strong>Cooled:</strong> InSb, HgCdTe (MCT) - higher sensitivity</li>
+                            <li><strong>Uncooled:</strong> Microbolometer - lower cost, LWIR</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Datasets Section -->
+        <section id="datasets" class="content-section">
+            <h2>Simulated Thermal Datasets</h2>
+            
+            <div class="prose-section">
+                <p><strong>Realistic Dataset Generation:</strong> This module generates physics-based synthetic thermal datasets that simulate real FLIR camera outputs. Unlike simple temperature maps, these datasets incorporate: <strong>(1)</strong> Atmospheric point spread function (PSF) modeling atmospheric blur at distance, <strong>(2)</strong> Sensor noise models including Gaussian thermal noise and 1/f noise characteristics, <strong>(3)</strong> Detector saturation and non-linearity, <strong>(4)</strong> Realistic object thermal signatures with temperature gradients. Generated datasets can be saved as JSON or CSV format and re-loaded for analysis, enabling students to work with "realistic" data as if from an actual FLIR system.</p>
+            </div>
+            
+            <div class="dataset-controls">
+                <h3>Scene Configuration</h3>
+                <div class="advanced-controls">
+                    <div class="control-group">
+                        <label>Resolution: 
+                            <select id="resolution-select" onchange="updateResolution(this.value)">
+                                <option value="320x240">320×240 (Standard)</option>
+                                <option value="640x480">640×480 (High-Res)</option>
+                                <option value="640x512">640×512 (FLIR Tau 2)</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label>Object Type: 
+                            <select id="object-type" onchange="updateObjectType(this.value)">
+                                <option value="person">Person</option>
+                                <option value="vehicle">Vehicle</option>
+                                <option value="building">Building</option>
+                                <option value="multiple">Multiple Objects</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label>Object Distance: <input type="range" id="obj-distance" min="10" max="500" value="50" oninput="updateDistance(this.value)"> <span id="distance-val">50</span>m</label>
+                    </div>
+                    <div class="control-group">
+                        <label>Object Temperature: <input type="range" id="obj-temp" min="300" max="400" value="350" oninput="updateObjTemp(this.value)"> <span id="obj-temp-val">350</span>K</label>
+                    </div>
+                    <div class="control-group">
+                        <label>Background Temperature: <input type="range" id="bg-temp" min="280" max="320" value="295" oninput="updateBgTemp(this.value)"> <span id="bg-temp-val">295</span>K</label>
+                    </div>
+                    <div class="control-group">
+                        <label>Atmospheric Visibility: <input type="range" id="visibility" min="1" max="10" value="8" step="0.5" oninput="updateVisibility(this.value)"> <span id="visibility-val">8</span>km</label>
+                    </div>
+                    <div class="control-group">
+                        <label>Sensor Noise (NETD mK): <input type="range" id="noise-level" min="20" max="200" value="50" oninput="updateNoise(this.value)"> <span id="noise-val">50</span></label>
+                    </div>
+                    <div class="control-group">
+                        <label><input type="checkbox" id="enable-psf" checked onchange="generateDataset()"> Apply Atmospheric PSF (blur at distance)</label>
+                        <label><input type="checkbox" id="enable-1f-noise" checked onchange="generateDataset()"> Include 1/f Noise (spatial correlations)</label>
+                        <label><input type="checkbox" id="enable-nonlinearity" onchange="generateDataset()"> Detector Non-linearity</label>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button onclick="generateDataset()" class="primary-btn">Generate Dataset</button>
+                    <button onclick="downloadDatasetJSON()" class="secondary-btn">Save as JSON</button>
+                    <button onclick="downloadDataset()" class="secondary-btn">Save as CSV</button>
+                    <button onclick="document.getElementById('load-dataset-file').click()" class="secondary-btn">Load Dataset</button>
+                    <input type="file" id="load-dataset-file" accept=".json,.csv" style="display: none;" onchange="loadDatasetFile(this)">
+                </div>
+            </div>
+            <div class="dataset-display">
+                <div class="image-viewer">
+                    <h3>Thermal Image</h3>
+                    <canvas id="thermal-canvas" width="320" height="240"></canvas>
+                    <div class="colorbar">
+                        <canvas id="colorbar-canvas" width="30" height="240"></canvas>
+                        <div class="colorbar-labels">
+                            <span id="temp-max">350K</span>
+                            <span id="temp-min">295K</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="data-stats">
+                    <h3>Dataset Statistics</h3>
+                    <div id="stats-display">
+                        <p>Generate a dataset to see statistics</p>
+                    </div>
+                    <canvas id="histogram-canvas" width="400" height="200"></canvas>
+                </div>
+            </div>
+            <div class="presets">
+                <h3>Example Scenarios</h3>
+                <button onclick="loadPreset('person-near')">Person at 10m</button>
+                <button onclick="loadPreset('vehicle-mid')">Vehicle at 100m</button>
+                <button onclick="loadPreset('building-far')">Building at 500m</button>
+                <button onclick="loadPreset('no-object')">Background Only</button>
+            </div>
+        </section>
+
+        <!-- Analysis Tools Section -->
+        <section id="analysis" class="content-section">
+            <h2>Image Analysis Tools</h2>
+            <div class="analysis-container">
+                <div class="analysis-viewer">
+                    <h3>Processing Pipeline</h3>
+                    <canvas id="analysis-canvas" width="320" height="240"></canvas>
+                    <div class="processing-chain">
+                        <div class="process-step active" data-step="original">Original</div>
+                        <div class="process-step" data-step="filtered">Filtered</div>
+                        <div class="process-step" data-step="enhanced">Enhanced</div>
+                        <div class="process-step" data-step="detected">Detection</div>
+                    </div>
+                </div>
+                <div class="analysis-controls">
+                    <h3>Processing Options</h3>
+                    <div class="tool-section">
+                        <h4>Spatial Filtering</h4>
+                        <button onclick="applyFilter('gaussian')">Gaussian Blur</button>
+                        <button onclick="applyFilter('median')">Median Filter</button>
+                        <button onclick="applyFilter('sharpen')">Sharpen</button>
+                        <label>Kernel Size: <input type="range" id="kernel-size" min="3" max="11" step="2" value="5" oninput="updateKernelSize(this.value)"> <span id="kernel-val">5</span></label>
+                    </div>
+                    <div class="tool-section">
+                        <h4>Enhancement</h4>
+                        <button onclick="applyEnhancement('histogram-eq')">Histogram Equalization</button>
+                        <button onclick="applyEnhancement('clahe')">CLAHE</button>
+                        <label>Contrast: <input type="range" id="contrast" min="0.5" max="3" step="0.1" value="1" oninput="updateContrast(this.value)"> <span id="contrast-val">1.0</span></label>
+                    </div>
+                    <div class="tool-section">
+                        <h4>Edge Detection</h4>
+                        <button onclick="applyEdge('sobel')">Sobel</button>
+                        <button onclick="applyEdge('canny')">Canny</button>
+                        <label>Threshold: <input type="range" id="edge-thresh" min="0" max="255" value="50" oninput="updateEdgeThresh(this.value)"> <span id="edge-val">50</span></label>
+                    </div>
+                    <div class="tool-section">
+                        <h4>Object Detection</h4>
+                        <button onclick="detectObjects()">Detect Objects</button>
+                        <label>Sensitivity: <input type="range" id="detect-thresh" min="0" max="100" value="50" oninput="updateDetectThresh(this.value)"> <span id="detect-val">50</span></label>
+                    </div>
+                    <button onclick="resetAnalysis()" class="reset-btn">Reset All</button>
+                </div>
+            </div>
+            <div class="analysis-results">
+                <h3>Analysis Results</h3>
+                <div id="detection-results">
+                    <p>Apply analysis tools to see results</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Simulation Section -->
+        <section id="simulation" class="content-section">
+            <h2>Real-Time Simulation</h2>
+            <div class="simulation-container">
+                <div class="sim-viewer">
+                    <h3>Live Thermal View</h3>
+                    <canvas id="sim-canvas" width="320" height="240"></canvas>
+                    <div class="sim-controls-inline">
+                        <button onclick="toggleSimulation()" id="sim-toggle">Start Simulation</button>
+                        <button onclick="resetSimulation()">Reset</button>
+                    </div>
+                </div>
+                <div class="sim-controls">
+                    <h3>Simulation Parameters</h3>
+                    <div class="sim-param">
+                        <h4>Scene Setup</h4>
+                        <label>Number of Objects: <input type="number" id="num-objects" min="0" max="5" value="1" oninput="updateNumObjects(this.value)"></label>
+                        <label>Object Motion: 
+                            <select id="motion-type" onchange="updateMotion(this.value)">
+                                <option value="static">Static</option>
+                                <option value="linear">Linear</option>
+                                <option value="random">Random Walk</option>
+                            </select>
+                        </label>
+                        <label>Speed (m/s): <input type="range" id="motion-speed" min="0" max="10" value="2" step="0.5" oninput="updateMotionSpeed(this.value)"> <span id="speed-val">2</span></label>
+                    </div>
+                    <div class="sim-param">
+                        <h4>Camera Settings</h4>
+                        <label>Frame Rate (Hz): <input type="number" id="frame-rate" min="1" max="60" value="30" oninput="updateFrameRate(this.value)"></label>
+                        <label>Integration Time (ms): <input type="range" id="integration-time" min="1" max="50" value="10" oninput="updateIntegration(this.value)"> <span id="integration-val">10</span></label>
+                        <label>Field of View (°): <input type="range" id="fov" min="10" max="90" value="40" oninput="updateFOV(this.value)"> <span id="fov-val">40</span></label>
+                    </div>
+                    <div class="sim-param">
+                        <h4>Performance Metrics</h4>
+                        <div id="sim-metrics">
+                            <p><strong>Current SNR:</strong> <span id="snr-metric">--</span> dB</p>
+                            <p><strong>Detection Range:</strong> <span id="range-metric">--</span> m</p>
+                            <p><strong>Frame Time:</strong> <span id="frame-time">--</span> ms</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="performance-calc">
+                <h3>Detection Range Calculator</h3>
+                <div class="calc-inputs">
+                    <label>Object Size (m): <input type="number" id="obj-size" value="1.8" step="0.1"></label>
+                    <label>Object-Background ΔT (K): <input type="number" id="delta-t" value="10" step="1"></label>
+                    <label>NETD (mK): <input type="number" id="netd" value="50" step="10"></label>
+                    <label>Required SNR: <input type="number" id="req-snr" value="5" step="0.5"></label>
+                    <button onclick="calculateDetectionRange()">Calculate Range</button>
+                </div>
+                <div id="range-result"></div>
+            </div>
+        </section>
+
+        <!-- Steel Inspection Section -->
+        <section id="steel-inspection" class="content-section">
+            <h2>FLIR Applications in Steel Structural Inspection</h2>
+            
+            <div class="prose-section">
+                <p><strong>Thermal imaging technology</strong>, originally developed for military target acquisition as detailed in the DSIAC monograph, has undergone a remarkable transformation from battlefield reconnaissance to industrial non-destructive testing. The identical physics governing the detection of a 300K target against a 290K background at kilometer ranges in military operations applies with equal rigor to identifying thermal anomalies in structural steel—the difference lies merely in scale and application context. Where military systems sought to detect 10K temperature differences across vast distances, industrial thermography now routinely identifies 0.1K anomalies in steel members at close range, leveraging the same fundamental principles of blackbody radiation and detector physics that enabled the revolution in night vision capability.</p>
+                
+                <p>Steel structural inspection represents a critical safety application where FLIR technology excels precisely because steel exhibits predictable thermal behavior governed by Planck's law. At ambient temperature near 300K, steel members emit peak radiation around 10μm within the LWIR atmospheric window—the same physics demonstrated in the Theory section of this platform. When defects such as cracks, voids, or delamination exist within the steel structure, they disrupt the normal heat flow patterns, creating detectable thermal signatures. The technology transition from GEN2 military focal plane arrays to affordable uncooled microbolometers—chronicled in Chapters 7-9 of the DSIAC monograph—directly enabled the proliferation of handheld thermal cameras now ubiquitous in structural engineering and predictive maintenance.</p>
+                
+                <p>The fundamental advantage of thermographic inspection stems from its non-contact, non-invasive nature combined with rapid area coverage. Traditional inspection methods such as ultrasonic testing or dye penetrant examination require direct access, surface preparation, and sequential point-by-point measurement. FLIR imaging, by contrast, can survey entire bridge spans, building facades, or industrial installations in minutes, revealing hidden subsurface defects through their thermal signatures without scaffolding or surface contact. This capability proves particularly valuable for large infrastructure where conventional methods would be prohibitively time-consuming or physically impossible to deploy across all critical members.</p>
+            </div>
+
+            <div class="steel-fundamentals">
+                <h3>Physical Principles of Steel Thermography</h3>
+                <div class="fundamentals-grid">
+                    <div class="fundamental-card">
+                        <h4>Thermal Conductivity</h4>
+                        <p><strong>Steel: k ≈ 50 W/(m·K)</strong></p>
+                        <p>High thermal conductivity means heat flows readily through intact steel, creating uniform temperature distributions. Defects interrupt this flow, creating thermal anomalies detectable at the surface.</p>
+                        <div class="formula">
+                            \[ q = -k \nabla T \]
+                        </div>
+                        <p class="small-text">Heat flux (q) is proportional to temperature gradient (∇T). Voids reduce local conductivity, disrupting the gradient.</p>
+                    </div>
+                    <div class="fundamental-card">
+                        <h4>Emissivity Variation</h4>
+                        <p><strong>Critical Material Property</strong></p>
+                        <ul class="compact-list">
+                            <li>Polished steel: ε ≈ 0.10 (highly reflective)</li>
+                            <li>Oxidized steel: ε ≈ 0.80 (dull, rusty)</li>
+                            <li>Painted (matte black): ε ≈ 0.95 (ideal)</li>
+                        </ul>
+                        <p class="small-text">Surface finish dramatically affects apparent temperature. Quantitative thermography often requires known-emissivity coatings.</p>
+                    </div>
+                    <div class="fundamental-card">
+                        <h4>Detection Modes</h4>
+                        <p><strong>Passive vs. Active Thermography</strong></p>
+                        <p><strong>Passive:</strong> Detect natural thermal variations (solar loading, ambient gradients)</p>
+                        <p><strong>Active:</strong> Apply external heat stimulus (flash lamps, induction heating) and observe thermal response over time</p>
+                        <p class="small-text">Active methods reveal subsurface defects through differential cooling rates.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theory-block">
+                <h3>Common Steel Defects and Their Thermal Signatures</h3>
+                
+                <div class="defect-showcase">
+                    <div class="defect-type-selector">
+                        <h4>Select Defect Type:</h4>
+                        <div class="button-group-vertical">
+                            <button onclick="showSteelDefect('crack')" class="defect-btn active" data-defect="crack">Fatigue Crack</button>
+                            <button onclick="showSteelDefect('void')" class="defect-btn" data-defect="void">Subsurface Void</button>
+                            <button onclick="showSteelDefect('corrosion')" class="defect-btn" data-defect="corrosion">Corrosion</button>
+                            <button onclick="showSteelDefect('delamination')" class="defect-btn" data-defect="delamination">Coating Delamination</button>
+                            <button onclick="showSteelDefect('weld')" class="defect-btn" data-defect="weld">Weld Defect</button>
+                        </div>
+                    </div>
+                    
+                    <div class="defect-visualization">
+                        <div class="defect-canvas-container">
+                            <h4>Thermal Image</h4>
+                            <canvas id="steel-thermal-canvas" width="400" height="300"></canvas>
+                            <div class="temp-scale-horizontal">
+                                <span class="temp-label-cold">Cold</span>
+                                <canvas id="steel-colorbar" width="300" height="20"></canvas>
+                                <span class="temp-label-hot">Hot</span>
+                            </div>
+                        </div>
+                        
+                        <div class="defect-profile">
+                            <h4>Temperature Profile</h4>
+                            <canvas id="steel-profile-canvas" width="400" height="200"></canvas>
+                            <p class="caption">Cross-sectional temperature distribution showing thermal anomaly</p>
+                        </div>
+                    </div>
+                    
+                    <div class="defect-description">
+                        <div id="defect-info">
+                            <h4>Fatigue Crack</h4>
+                            <p><strong>Mechanism:</strong> Cyclic loading concentrates stress at crack tips, generating localized heating through hysteresis. Crack opening disrupts heat flow, creating thermal gradient.</p>
+                            <p><strong>Thermal Signature:</strong> ΔT ≈ 0.2-2.0K depending on loading. Appears as linear hot or cold region depending on inspection timing.</p>
+                            <p><strong>Detection Range:</strong> Surface cracks: 0.5-5m. Subsurface: 1-2m (active thermography required)</p>
+                            <p><strong>Optimal Band:</strong> LWIR (8-14μm) for passive, MWIR (3-5μm) for active pulsed thermography</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theory-block">
+                <h3>Interactive Defect Detection Simulator</h3>
+                <p>This simulator demonstrates how thermal anomalies from steel defects appear in FLIR imagery. Adjust inspection parameters to optimize detection capability.</p>
+                
+                <div class="steel-simulator">
+                    <div class="sim-controls-steel">
+                        <h4>Inspection Configuration</h4>
+                        <div class="control-group">
+                            <label>Inspection Method:
+                                <select id="inspection-method" onchange="updateSteelInspection()">
+                                    <option value="passive">Passive (Ambient)</option>
+                                    <option value="flash">Flash Thermography</option>
+                                    <option value="lock-in">Lock-in Thermography</option>
+                                    <option value="induction">Induction Heating</option>
+                                </select>
+                            </label>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Steel Member Thickness: 
+                                <input type="range" id="steel-thickness" min="5" max="50" value="20" oninput="updateSteelThickness(this.value)">
+                                <span id="steel-thickness-val">20</span>mm
+                            </label>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Defect Depth (below surface): 
+                                <input type="range" id="defect-depth" min="0" max="25" value="5" oninput="updateDefectDepth(this.value)">
+                                <span id="defect-depth-val">5</span>mm
+                            </label>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Defect Size: 
+                                <input type="range" id="defect-size" min="0.5" max="10" value="2" step="0.5" oninput="updateDefectSize(this.value)">
+                                <span id="defect-size-val">2</span>mm
+                            </label>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Surface Emissivity: 
+                                <input type="range" id="steel-emissivity" min="0.1" max="0.95" value="0.8" step="0.05" oninput="updateSteelEmissivity(this.value)">
+                                <span id="steel-emissivity-val">0.80</span>
+                            </label>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Camera Distance: 
+                                <input type="range" id="camera-distance-steel" min="0.5" max="10" value="2" step="0.5" oninput="updateCameraDistance(this.value)">
+                                <span id="camera-distance-val">2.0</span>m
+                            </label>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Detector Type:
+                                <select id="detector-type-steel" onchange="updateDetectorType()">
+                                    <option value="uncooled">Uncooled Microbolometer (NETD: 50mK)</option>
+                                    <option value="cooled-lwir">Cooled MCT LWIR (NETD: 20mK)</option>
+                                    <option value="cooled-mwir">Cooled InSb MWIR (NETD: 15mK)</option>
+                                </select>
+                            </label>
+                        </div>
+                        
+                        <button onclick="runSteelInspection()" class="primary-btn">Run Inspection</button>
+                    </div>
+                    
+                    <div class="sim-display-steel">
+                        <div class="steel-canvas-wrapper">
+                            <h4>Simulated Thermal Image</h4>
+                            <canvas id="steel-sim-canvas" width="400" height="300"></canvas>
+                            <div class="detection-overlay" id="detection-overlay"></div>
+                        </div>
+                        
+                        <div class="inspection-results">
+                            <h4>Inspection Results</h4>
+                            <div id="steel-results">
+                                <p class="instruction-text">Configure parameters and click "Run Inspection" to simulate defect detection</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theory-block">
+                <h3>Emissivity Impact Calculator</h3>
+                <p>Emissivity critically affects temperature measurement accuracy. This calculator demonstrates why surface preparation matters in quantitative thermography.</p>
+                
+                <div class="interactive-calc">
+                    <div class="emissivity-calc">
+                        <div class="calc-column">
+                            <h5>Actual Steel Conditions</h5>
+                            <label>True Temperature: <input type="number" id="true-temp-steel" value="320" min="280" max="400">K</label>
+                            <label>True Emissivity: <input type="number" id="true-emissivity" value="0.25" min="0.05" max="0.95" step="0.05"></label>
+                        </div>
+                        <div class="calc-column">
+                            <h5>Camera Assumptions</h5>
+                            <label>Assumed Emissivity: <input type="number" id="assumed-emissivity" value="0.95" min="0.05" max="0.95" step="0.05"></label>
+                        </div>
+                    </div>
+                    <button onclick="calculateEmissivityError()">Calculate Measurement Error</button>
+                    <div id="emissivity-error-result"></div>
+                    
+                    <div class="info-box" style="margin-top: 1rem;">
+                        <p><strong>Key Insight:</strong> If camera assumes ε=0.95 (typical default) but steel has ε=0.25 (polished), the camera will report temperature 30-50K lower than actual. This is why industrial thermography often applies black paint or tape (ε≈0.95) to create known emissivity.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theory-block">
+                <h3>Active Thermography Time-Domain Analysis</h3>
+                <p>Active thermography applies heat pulses and analyzes thermal decay. Defects at different depths produce characteristic cooling curves.</p>
+                
+                <canvas id="thermal-decay-canvas" width="700" height="400"></canvas>
+                
+                <div class="interactive-calc">
+                    <div class="decay-controls">
+                        <label>Heat Pulse Energy (J/cm²): 
+                            <input type="range" id="pulse-energy" min="1" max="20" value="10" oninput="updateDecay()">
+                            <span id="pulse-energy-val">10</span>
+                        </label>
+                        
+                        <div class="toggle-group">
+                            <h5>Show Depth Layers:</h5>
+                            <label><input type="checkbox" id="show-surface" checked onchange="updateDecay()"> Surface (0mm)</label>
+                            <label><input type="checkbox" id="show-2mm" checked onchange="updateDecay()"> 2mm Depth</label>
+                            <label><input type="checkbox" id="show-5mm" checked onchange="updateDecay()"> 5mm Depth</label>
+                            <label><input type="checkbox" id="show-10mm" checked onchange="updateDecay()"> 10mm Depth</label>
+                        </div>
+                        
+                        <div id="decay-analysis">
+                            <p><strong>Analysis:</strong> Defects at greater depth show delayed thermal response. Peak temperature difference appears later in time, allowing depth estimation from temporal signature.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-section">
+                <h3>Detection Capability Comparison</h3>
+                <p>Compare detection performance between military and industrial applications using identical physics:</p>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Military Target Detection</th>
+                            <th>Steel Defect Detection</th>
+                            <th>Physics Basis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Target Temperature</td>
+                            <td>300K (ambient object)</td>
+                            <td>300K (steel member)</td>
+                            <td>Planck's Law - peak at ~10μm</td>
+                        </tr>
+                        <tr>
+                            <td>Temperature Contrast</td>
+                            <td>ΔT = 5-20K (target vs background)</td>
+                            <td>ΔT = 0.1-5K (defect vs intact)</td>
+                            <td>Stefan-Boltzmann - radiant power scales as T⁴</td>
+                        </tr>
+                        <tr>
+                            <td>Detection Range</td>
+                            <td>100m - 5km</td>
+                            <td>0.5m - 10m</td>
+                            <td>Beer-Lambert - atmospheric attenuation</td>
+                        </tr>
+                        <tr>
+                            <td>Required NETD</td>
+                            <td>50-100mK (uncooled adequate)</td>
+                            <td>20-50mK (cooled preferred)</td>
+                            <td>SNR equation - noise limits sensitivity</td>
+                        </tr>
+                        <tr>
+                            <td>Optimal Band</td>
+                            <td>LWIR (8-14μm)</td>
+                            <td>LWIR (8-14μm) passive, MWIR active</td>
+                            <td>Atmospheric windows + Planck peak</td>
+                        </tr>
+                        <tr>
+                            <td>Spatial Resolution</td>
+                            <td>0.5-2m at 1km</td>
+                            <td>0.5-2mm at 2m</td>
+                            <td>Diffraction limit + detector pitch</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="theory-block">
+                <h3>Defect Detection Physics Calculator</h3>
+                <p>Calculate minimum detectable defect size based on thermal properties and camera specifications.</p>
+                
+                <div class="interactive-calc">
+                    <div class="steel-calc-inputs">
+                        <div class="calc-section">
+                            <h5>Material Properties</h5>
+                            <label>Thermal Conductivity (W/m·K): <input type="number" id="thermal-cond" value="50" step="5"></label>
+                            <label>Thermal Diffusivity (m²/s): <input type="number" id="thermal-diff" value="1.4e-5" step="0.1e-5"></label>
+                            <label>Surface Emissivity: <input type="number" id="surf-emissivity" value="0.80" min="0.05" max="0.95" step="0.05"></label>
+                        </div>
+                        
+                        <div class="calc-section">
+                            <h5>Inspection Parameters</h5>
+                            <label>Ambient Temperature (K): <input type="number" id="ambient-temp-steel" value="295" step="1"></label>
+                            <label>Applied Heat (W/cm²): <input type="number" id="applied-heat" value="0" step="0.5"></label>
+                            <label>Inspection Time (seconds): <input type="number" id="inspection-time" value="10" step="1"></label>
+                        </div>
+                        
+                        <div class="calc-section">
+                            <h5>Camera Specifications</h5>
+                            <label>Camera NETD (mK): <input type="number" id="camera-netd-steel" value="50" step="10"></label>
+                            <label>Pixel Size at Target (mm): <input type="number" id="pixel-size-steel" value="1" step="0.1"></label>
+                            <label>Required SNR for Detection: <input type="number" id="snr-required-steel" value="5" step="0.5"></label>
+                        </div>
+                    </div>
+                    
+                    <button onclick="calculateDefectDetection()" class="primary-btn">Calculate Detection Capability</button>
+                    
+                    <div id="defect-calc-result"></div>
+                </div>
+            </div>
+
+            <div class="application-examples">
+                <h3>Real-World Steel Inspection Applications</h3>
+                
+                <div class="examples-grid">
+                    <div class="example-card">
+                        <h4>Bridge Infrastructure</h4>
+                        <p><strong>Challenge:</strong> Detect fatigue cracks in steel girders before catastrophic failure</p>
+                        <p><strong>Method:</strong> Solar loading passive thermography or active induction heating</p>
+                        <p><strong>Success Criteria:</strong> Detect 1-5mm cracks at 5-10m standoff distance</p>
+                        <p><strong>Physics:</strong> Crack interrupts heat flow from solar-heated surface; appears as cool line during afternoon, warm line after sunset as heat redistributes</p>
+                    </div>
+                    
+                    <div class="example-card">
+                        <h4>Welded Connections</h4>
+                        <p><strong>Challenge:</strong> Identify incomplete weld penetration, porosity, or slag inclusions</p>
+                        <p><strong>Method:</strong> Flash thermography with analysis of cooling transient</p>
+                        <p><strong>Success Criteria:</strong> Detect voids >2mm at depths up to 10mm</p>
+                        <p><strong>Physics:</strong> Voids have lower thermal diffusivity (α≈0.02 vs 1.4×10⁻⁵ m²/s for steel), creating delayed thermal response visible in time-domain analysis</p>
+                    </div>
+                    
+                    <div class="example-card">
+                        <h4>Corrosion Under Paint</h4>
+                        <p><strong>Challenge:</strong> Detect hidden corrosion without removing protective coatings</p>
+                        <p><strong>Method:</strong> Passive thermal imaging exploiting differential solar absorption</p>
+                        <p><strong>Success Criteria:</strong> Map corrosion zones >50mm diameter through 0.5mm paint</p>
+                        <p><strong>Physics:</strong> Rust (ε≈0.7-0.8) absorbs solar radiation more efficiently than painted steel (ε≈0.4-0.5), appearing warmer during day</p>
+                    </div>
+                    
+                    <div class="example-card">
+                        <h4>Bolted Connections</h4>
+                        <p><strong>Challenge:</strong> Verify bolt tightness and detect loose connections</p>
+                        <p><strong>Method:</strong> Passive imaging during thermal cycling or load application</p>
+                        <p><strong>Success Criteria:</strong> Distinguish tight vs. loose bolts in connection assemblies</p>
+                        <p><strong>Physics:</strong> Loose bolts create air gaps (k≈0.025 W/m·K) vs. tight metal-metal contact (k≈50 W/m·K), producing 2-10K temperature difference under load</p>
+                    </div>
+                    
+                    <div class="example-card">
+                        <h4>Coating Delamination</h4>
+                        <p><strong>Challenge:</strong> Locate areas where protective coatings have separated from substrate</p>
+                        <p><strong>Method:</strong> Solar loading or flash thermography</p>
+                        <p><strong>Success Criteria:</strong> Map delamination zones >25mm across</p>
+                        <p><strong>Physics:</strong> Air gap between coating and steel acts as thermal insulator, retarding heat flow and creating 0.5-3K surface temperature anomaly</p>
+                    </div>
+                    
+                    <div class="example-card">
+                        <h4>High-Temperature Components</h4>
+                        <p><strong>Challenge:</strong> Monitor furnace walls, piping, heat exchangers for hot spots</p>
+                        <p><strong>Method:</strong> Continuous passive monitoring (200-600°C)</p>
+                        <p><strong>Success Criteria:</strong> Detect 5-20K anomalies indicating refractory failure or tube thinning</p>
+                        <p><strong>Physics:</strong> At elevated temperatures, Planck peak shifts to MWIR band; cooled InSb detectors provide superior sensitivity for hot target imaging</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theory-block">
+                <h3>Technology Heritage: Military to Industrial</h3>
+                <p>The transition of FLIR technology from classified military development to commercial steel inspection exemplifies successful dual-use technology transfer.</p>
+                
+                <div class="timeline-section">
+                    <div class="timeline-item">
+                        <div class="timeline-year">1960-1970</div>
+                        <div class="timeline-content">
+                            <strong>GEN1 Military FLIRs</strong>
+                            <p>Discrete MCT detectors cooled to 77K (Chapters 5-6 DSIAC). Large, expensive systems ($250K+) for gunships and tanks. Proved infrared could detect ambient-temperature objects.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">1980s</div>
+                        <div class="timeline-content">
+                            <strong>Microbolometer Invention</strong>
+                            <p>Paul Kruse at Honeywell invented uncooled microbolometer arrays (Chapter 9.3 DSIAC). Eliminated cryocooler requirement, reducing system cost 10-20×.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">1990s</div>
+                        <div class="timeline-content">
+                            <strong>Commercial Proliferation</strong>
+                            <p>GEN2 production drove costs down from $50K to $3-15K. First handheld industrial thermography cameras emerged. Bridge inspection programs began adopting FLIR.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">2000-Present</div>
+                        <div class="timeline-content">
+                            <strong>Ubiquitous Industrial Use</strong>
+                            <p>640×480 microbolometer cameras now $2-5K. Smartphone-attachable units available. ASTM standards established for thermographic inspection (E1934, E2533). AI-based defect recognition emerging.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="advantages-section">
+                <h3>Advantages and Limitations of FLIR for Steel Inspection</h3>
+                <div class="advantages-grid">
+                    <div class="advantage-card">
+                        <h4>✓ Advantages</h4>
+                        <ul>
+                            <li><strong>Non-contact:</strong> No scaffolding or surface access required</li>
+                            <li><strong>Rapid survey:</strong> Scan entire structures in minutes vs. days for point methods</li>
+                            <li><strong>Subsurface detection:</strong> Reveals hidden defects (active methods: 5-50mm depth)</li>
+                            <li><strong>Safe operation:</strong> No radiation hazard (unlike radiography)</li>
+                            <li><strong>Real-time:</strong> Immediate results enable dynamic load testing</li>
+                            <li><strong>Large area coverage:</strong> Single image captures square meters</li>
+                        </ul>
+                    </div>
+                    <div class="advantage-card limitation-card">
+                        <h4>✗ Limitations</h4>
+                        <ul>
+                            <li><strong>Emissivity sensitivity:</strong> Surface finish variations create false positives; quantitative work needs coatings</li>
+                            <li><strong>Depth limitation:</strong> Passive: surface only; Active: typically <10mm steel, max ~50mm</li>
+                            <li><strong>Environmental interference:</strong> Solar reflection, wind cooling, rain create artifacts</li>
+                            <li><strong>Access requirements:</strong> Line-of-sight needed; cannot inspect behind obstructions</li>
+                            <li><strong>Skill-dependent:</strong> Interpretation requires training in thermal physics and defect mechanisms</li>
+                            <li><strong>Not sizing tool:</strong> Provides defect location and approximate extent, but ultrasonic methods needed for precise dimensions</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="references-section">
+                <h3>📚 Standards and References for Steel Thermography</h3>
+                <ol>
+                    <li>
+                        ASTM E1934-99a (2018). <em>Standard Guide for Examining Electrical and Mechanical Equipment with Infrared Thermography</em>. 
+                        ASTM International.
+                    </li>
+                    <li>
+                        ASTM E2533-09 (2017). <em>Standard Guide for Nondestructive Testing of Polymer Matrix Composites Used in Aerospace Applications</em>. 
+                        (Applicable techniques extend to metals)
+                    </li>
+                    <li>
+                        ISO 18434-1:2008. <em>Condition monitoring and diagnostics of machines - Thermography - Part 1: General procedures</em>.
+                    </li>
+                    <li>
+                        Maldague, X. P. V. (2001). <em>Theory and Practice of Infrared Technology for Nondestructive Testing</em>. 
+                        Wiley-Interscience.
+                    </li>
+                    <li>
+                        Usamentiaga, R., et al. (2014). "Infrared Thermography for Temperature Measurement and Non-Destructive Testing." 
+                        <em>Sensors</em>, 14(7), 12305-12348.
+                    </li>
+                    <li>
+                        ASNT. (2016). <em>Infrared and Thermal Testing Handbook</em> (3rd ed.). 
+                        American Society for Nondestructive Testing.
+                    </li>
+                    <li>
+                        Defense Systems Information Analysis Center (DSIAC). (2021). <em>The History of Forward-Looking Infrared (FLIR)</em>. 
+                        Chapters 7-10: Technology transfer from military to commercial applications.
+                    </li>
+                    <li>
+                        Ibarra-Castanedo, C., & Maldague, X. (2013). "Infrared Thermography." 
+                        In <em>Handbook of Technical Diagnostics</em> (pp. 175-220). Springer.
+                    </li>
+                </ol>
+            </div>
+
+            <div class="practical-guidance">
+                <h3>Practical Inspection Guidelines</h3>
+                <div class="guidance-content">
+                    <p>The same detector physics principles demonstrated throughout this platform apply directly to industrial thermography. When conducting steel inspections, the fundamental equations remain unchanged—only the application context differs. The Stefan-Boltzmann law determines radiated power, Planck's law governs spectral distribution, and atmospheric transmission affects measurement range precisely as in military applications. The critical distinction lies in measurement scale: where military systems optimized for kilometer-range target acquisition, steel inspection demands millimeter-scale spatial resolution at close range with temperature discrimination approaching the theoretical limits of detector noise.</p>
+                    
+                    <p><strong>Optimal Conditions for Passive Inspection:</strong> Conduct inspections during periods of thermal transients—early morning after overnight cooling, or late afternoon as solar-heated members equilibrate. Temperature differences between defective and intact regions maximize during these transitions when heat flow patterns are most dynamic. Avoid midday when solar loading creates overwhelming thermal gradients unrelated to structural defects.</p>
+                    
+                    <p><strong>Active Thermography Protocol:</strong> For subsurface defect detection, flash thermography provides superior results by establishing controlled initial conditions. Heat pulse duration should be optimized based on material thickness and defect depth—typically 1-10 milliseconds for 10-20mm steel sections. Analysis of the cooling curve's temporal derivative often reveals defects more clearly than raw temperature data, as defects produce characteristic inflection points in the thermal decay signature.</p>
+                    
+                    <p><strong>Emissivity Management:</strong> In quantitative applications requiring absolute temperature measurement, apply uniform high-emissivity coating (black paint ε≈0.95, or specialized tapes) to eliminate emissivity variations. For qualitative defect detection, raw steel surfaces often suffice since relative temperature patterns reveal anomalies independent of absolute values. However, be aware that surface rust appears warmer than bare metal under identical thermal conditions due to emissivity differences—a phenomenon that can either aid corrosion detection or create false positives depending on inspection objectives.</p>
+                </div>
+            </div>
+
+            <div class="case-study">
+                <h3>Case Study: Bridge Girder Crack Detection</h3>
+                <div class="case-study-content">
+                    <div class="case-scenario">
+                        <h4>Scenario</h4>
+                        <p><strong>Structure:</strong> Highway overpass with welded steel I-beam girders, 15m span, web thickness 20mm</p>
+                        <p><strong>Suspected Issue:</strong> Fatigue cracking at welded connection, potentially extending 5-15mm into web</p>
+                        <p><strong>Access Constraints:</strong> Active traffic, inspection from ground only, 8m standoff distance</p>
+                    </div>
+                    
+                    <div class="case-solution">
+                        <h4>Thermographic Solution</h4>
+                        <p><strong>Method Selected:</strong> Passive solar-loading thermography conducted late afternoon</p>
+                        <p><strong>Equipment:</strong> Cooled LWIR camera (NETD: 20mK, 640×480 resolution, 25mm lens)</p>
+                        <p><strong>Physics Applied:</strong> Solar heating throughout day creates temperature gradient through girder thickness. Crack disrupts lateral heat flow, creating 0.5-2K temperature difference along crack path during cooling phase.</p>
+                    </div>
+                    
+                    <div class="case-results">
+                        <h4>Results & Analysis</h4>
+                        <p><strong>Detection:</strong> 12mm surface crack detected as 1.2K thermal anomaly extending 200mm along weld toe</p>
+                        <p><strong>Validation:</strong> Ultrasonic testing confirmed crack depth 8mm, length 185mm</p>
+                        <p><strong>Key Factor:</strong> Inspection timing crucial—anomaly visible 16:00-18:00 (cooling phase), invisible at 12:00 (peak heating) and 08:00 (thermal equilibrium)</p>
+                        <p><strong>SNR Achieved:</strong> ΔT=1.2K ÷ NETD=0.020K = SNR of 60, well above detection threshold of 5</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>FLIR Imaging Educational Platform | Realistic simulations based on fundamental physics principles</p>
+    </footer>
+
+    <script src="flir-data.js"></script>
+    <script src="flir-analysis.js"></script>
+    <script src="flir-simulation.js"></script>
+    <script src="flir-3d.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+

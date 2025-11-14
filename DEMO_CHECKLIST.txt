@@ -1,0 +1,169 @@
+═══════════════════════════════════════════════════════════════
+  FLIR EDUCATIONAL PLATFORM - DEMO DAY CHECKLIST
+═══════════════════════════════════════════════════════════════
+
+📍 PROJECT STATUS: ✅ COMPLETE AND READY
+
+═══════════════════════════════════════════════════════════════
+  BEFORE LEAVING HOME
+═══════════════════════════════════════════════════════════════
+
+[ ] Laptop charged
+[ ] Backup: Copy entire /flir folder to USB drive
+[ ] Test internet connection (for CDN resources)
+[ ] Browser updated (Chrome recommended)
+
+═══════════════════════════════════════════════════════════════
+  30 MINUTES BEFORE CLASS
+═══════════════════════════════════════════════════════════════
+
+[ ] Open Terminal
+[ ] cd /Users/kylemathewson/flir
+[ ] python3 -m http.server 8000
+[ ] Open browser: http://localhost:8000/
+
+═══════════════════════════════════════════════════════════════
+  PRE-DEMO TEST (5 MINUTES)
+═══════════════════════════════════════════════════════════════
+
+[ ] Introduction tab - spectrum chart visible
+[ ] Theory tab - formulas render (MathJax)
+[ ] Theory tab - Planck slider moves curve
+[ ] Hardware 3D - model loads and rotates
+[ ] Hardware 3D - click "Optics System" button
+[ ] Datasets - click "Person at 10m" preset
+[ ] Datasets - thermal image appears
+[ ] Analysis - click "Gaussian Blur"
+[ ] Simulation - click "Start Simulation"
+[ ] Simulation - objects moving
+
+═══════════════════════════════════════════════════════════════
+  CONNECT TO PROJECTOR
+═══════════════════════════════════════════════════════════════
+
+[ ] Cable connected
+[ ] Display mirrored or extended
+[ ] Browser window on projection screen
+[ ] Press F11 for full screen (or Cmd+Shift+F on Mac)
+[ ] Text readable from back of room?
+[ ] Colors look good?
+
+═══════════════════════════════════════════════════════════════
+  DEMO FLOW (10 MINUTES)
+═══════════════════════════════════════════════════════════════
+
+Minute 0-1: [ ] Introduction - "What is FLIR?"
+Minute 1-3: [ ] Theory - Planck curve demo
+Minute 3-5: [ ] Hardware 3D - Rotate and explain
+Minute 5-7: [ ] Datasets - Generate at 10m, 100m
+Minute 7-9: [ ] Analysis - Filter → Detect objects
+Minute 9-10: [ ] Simulation - Start with 2 objects
+
+═══════════════════════════════════════════════════════════════
+  KEY TALKING POINTS
+═══════════════════════════════════════════════════════════════
+
+✓ "FLIR detects infrared light invisible to human eye"
+✓ "Hotter objects emit more radiation - that's what we see"
+✓ "Specialized optics needed - glass blocks IR!"
+✓ "Distance and noise affect what we can detect"
+✓ "Algorithms automatically find targets"
+
+═══════════════════════════════════════════════════════════════
+  STUDENT ACTIVITIES (AFTER DEMO)
+═══════════════════════════════════════════════════════════════
+
+[ ] Share URL: http://localhost:8000/
+[ ] Or: Share entire folder for their computers
+[ ] Exercise 1: Generate person at 3 distances
+[ ] Exercise 2: Apply all filters to one image
+[ ] Exercise 3: Calculate detection range
+
+═══════════════════════════════════════════════════════════════
+  TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+IF 3D MODEL DOESN'T LOAD:
+→ Check browser console (F12)
+→ Verify Three.js CDN loaded
+→ Try Chrome instead
+
+IF FORMULAS LOOK WEIRD:
+→ MathJax takes 2-3 seconds to render
+→ Refresh page
+→ Check internet for CDN
+
+IF PAGE LOOKS BROKEN:
+→ Use http://localhost:8000/ not file://
+→ Check CSS loaded
+→ Try different browser
+
+IF SERVER WON'T START:
+→ Port 8000 in use? Try: python3 -m http.server 8001
+→ Open file directly (backup option)
+
+═══════════════════════════════════════════════════════════════
+  BACKUP PLAN
+═══════════════════════════════════════════════════════════════
+
+IF EVERYTHING FAILS:
+1. Open index.html directly (double-click)
+2. Most features work without server
+3. USB backup has full copy
+
+═══════════════════════════════════════════════════════════════
+  QUESTIONS STUDENTS MIGHT ASK
+═══════════════════════════════════════════════════════════════
+
+Q: "Why do we need special lenses?"
+A: "Glass blocks infrared! We use Germanium or Zinc Selenide"
+
+Q: "What's the difference between MWIR and LWIR?"
+A: "MWIR (3-5μm) sees hotter objects, LWIR (8-14μm) sees ambient"
+
+Q: "Why cool the detector?"
+A: "Reduces noise → better sensitivity → longer detection range"
+
+Q: "Is this real data?"
+A: "Simulated but physics-accurate - real cameras work this way"
+
+Q: "Can I download this?"
+A: "Yes! I'll share the folder after class"
+
+═══════════════════════════════════════════════════════════════
+  AFTER CLASS
+═══════════════════════════════════════════════════════════════
+
+[ ] Stop server: Ctrl+C in terminal
+[ ] Share folder with students
+[ ] Note any issues for next time
+[ ] Celebrate successful demo! 🎉
+
+═══════════════════════════════════════════════════════════════
+  FILES TO REFERENCE
+═══════════════════════════════════════════════════════════════
+
+📄 DEMO_GUIDE.md      - Full 10-minute script
+📄 README.md          - Complete documentation
+📄 PROJECT_SUMMARY.md - Technical details
+📄 todo.md            - Development completion status
+
+═══════════════════════════════════════════════════════════════
+  FINAL STATUS
+═══════════════════════════════════════════════════════════════
+
+✅ All 6 sections complete
+✅ All features working
+✅ Documentation ready
+✅ Server running
+✅ Demo script prepared
+✅ Student exercises ready
+✅ Troubleshooting guide available
+
+🎯 CONFIDENCE LEVEL: 100%
+🚀 READY TO DEMO!
+
+═══════════════════════════════════════════════════════════════
+  YOU'VE GOT THIS! 💪
+═══════════════════════════════════════════════════════════════
+
