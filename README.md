@@ -1,5 +1,7 @@
 # FLIR Imaging Educational Platform
 
+🚀 **[Live Demo](https://kylemath.github.io/flir)** 🚀
+
 ## Overview
 Interactive web-based educational platform for teaching Forward-Looking Infrared (FLIR) imaging technology. Features real-time simulations, 3D hardware visualization, synthetic datasets, and comprehensive analysis tools.
 
