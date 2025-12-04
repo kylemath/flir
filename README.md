@@ -326,3 +326,10 @@ Developed as an educational tool for teaching FLIR imaging concepts. Uses establ
 5. Test simulation start/stop
 6. Full screen for projector (F11/Cmd+Shift+F)
 
+
+## Preview
+
+<p align="center">
+  <img src="screenshot.png" alt="Project screenshot" width="720" />
+</p>
+

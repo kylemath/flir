@@ -1,0 +1,11 @@
+{
+  "id": "ForwardLookingInfraredImagingTutorial",
+  "title": "ForwardLookingInfraredImagingTutorial",
+  "oneLiner": "Forward looking infrared imaging tutorial and demos",
+  "demoUrl": "https://kylemath.github.io/flir",
+  "screenshot": "https://raw.githubusercontent.com/kylemath/flir/main/screenshot.png",
+  "kind": "project",
+  "categories": ["physics", "equipment", "imaging"],
+  "tags": ["physics", "equipment", "imaging"],
+  "status": "published"
+}
